@@ -1,4 +1,4 @@
-name: Build Tasks
+name: Build Tasks (Ayush Edition)
 on:
   workflow_dispatch:
 
@@ -6,23 +6,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21' # Java 17 ki jagah 21 zaroori hai
-          distribution: 'zulu' # Tasks ke liye Zulu distribution best hai
+          java-version: '21' # Tasks ke liye Java 21 hona bahut zaroori hai
+          distribution: 'zulu'
           cache: gradle
 
-      - name: Grant Permission
+      - name: Grant Execute Permission
         run: chmod +x gradlew
 
-      - name: Build Android F-Droid Debug APK
-        # Hum specifically ':app:assembleFdroidDebug' use karenge
-        run: ./gradlew :app:assembleFdroidDebug
+      - name: Build F-Droid Debug APK
+        # Hum sirf mobile app (:app) build karenge taaki time bache
+        run: ./gradlew :app:assembleFdroidDebug --no-daemon
 
-      - name: Upload APK
+      - name: Upload Tasks APK
         uses: actions/upload-artifact@v4
         with:
           name: Tasks-Fdroid-APK
