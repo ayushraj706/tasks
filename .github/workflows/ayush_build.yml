@@ -12,20 +12,21 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21' # Yahan 17 hata kar 21 likho strictly
-          distribution: 'zulu' # Tasks ke liye Zulu distribution kaafi stable hai
+          java-version: '21'
+          distribution: 'zulu'
           cache: gradle
 
       - name: Grant Permission
         run: chmod +x gradlew
 
-      - name: Build Mobile APK strictly with JDK 21
-        # Is baar hum strictly :composeApp module ko compile karenge Java 21 ke saath
+      - name: Build Mobile APK
+        # Humne module ka naam sahi kar diya hai
         run: ./gradlew :composeApp:assembleDebug --no-daemon
 
-      - name: Upload Correct Tasks APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Tasks-Mobile-APK
-          path: "app/build/outputs/apk/debug/**/*.apk"
+          # Ye path ab har folder mein APK dhoondhega (Universal Path)
+          path: "**/build/outputs/apk/**/*.apk"
           
